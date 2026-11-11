@@ -1,25 +1,20 @@
 const mongoose = require('mongoose');
 
 const materialSchema = new mongoose.Schema({
-  kode: {
+  sku: {
     type: String,
-    required: [true, 'Kode material wajib diisi'],
+    required: [true, 'SKU wajib diisi'],
     unique: true,
     trim: true
   },
   nama: {
     type: String,
-    required: [true, 'Nama material wajib diisi'],
+    required: [true, 'Nama wajib diisi'],
     trim: true
-  },
-  harga: {
-    type: Number,
-    required: [true, 'Harga material wajib diisi'],
-    min: [0, 'Harga tidak boleh negatif']
   },
   stok: {
     type: Number,
-    required: [true, 'Stok material wajib diisi'],
+    required: [true, 'Stok wajib diisi'],
     min: [0, 'Stok tidak boleh negatif']
   },
   satuan: {
@@ -28,17 +23,20 @@ const materialSchema = new mongoose.Schema({
     trim: true
   },
 
-  // Embedding
-  spesifikasi: {
-    ukuran: String,
-    bahan: String
-  },
+  // Embedding (subdocument tanpa _id)
+  lokasiRak: new mongoose.Schema(
+    {
+      blok: String,
+      nomor: String
+    },
+    { _id: false }
+  ),
 
   // Referencing
-  kategoriId: {
+  supplierId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Kategori',
-    required: [true, 'Kategori wajib dipilih']
+    ref: 'Supplier',
+    required: [true, 'Supplier wajib dipilih']
   },
 
   createdAt: {
