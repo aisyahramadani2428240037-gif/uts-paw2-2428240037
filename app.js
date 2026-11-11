@@ -8,13 +8,13 @@ const logger = require('./middlewares/logger');
 const { notFoundHandler, errorHandler } = require('./middlewares/errorHandler');
 
 // Import Routes
-// Import Routes
 const materialRoutes = require('./routes/materialRoutes');
-const kategoriRoutes = require('./routes/kategoriRoutes');
+const supplierRoutes = require('./routes/supplierRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
+// ---------- Middleware Global ----------
 app.use(logger);
 
 app.use(cors({
@@ -24,16 +24,20 @@ app.use(cors({
 
 app.use(express.json());
 
+// ---------- Route Dasar ----------
 app.get('/', (req, res) => {
   res.send('Server Express.js berjalan!');
 });
 
+// ---------- Route Toko Bangunan ----------
 app.use('/material', materialRoutes);
-app.use('/kategori', kategoriRoutes);
+app.use('/supplier', supplierRoutes);
 
+// ---------- Error Handler (paling akhir) ----------
 app.use(notFoundHandler);
 app.use(errorHandler);
 
+// ---------- Koneksi MongoDB ----------
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Terhubung ke MongoDB');
